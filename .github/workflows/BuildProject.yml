@@ -3,8 +3,8 @@ on: push
 
 env:
   GODOT_VERSION: 4.2.2
-  EXPORT_NAME: test-project
-  PROJECT_PATH: test-project
+  EXPORT_NAME: GodotBuildTest
+  PROJECT_PATH: GodotBuildText
 
 jobs:
   export-windows:
@@ -24,7 +24,7 @@ jobs:
       - name: Windows Build
         run: |
           mkdir -v -p build/windows
-          cd build/windows
+          cd $PROJECT_PATH
           godot --headless --verbose --export-release "Windows Desktop" ../build/windows/$EXPORT_NAME.exe
       - name: Upload Artifact
         uses: actions/upload-artifact@v1
