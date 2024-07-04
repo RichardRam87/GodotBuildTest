@@ -1,28 +1,24 @@
-name: Build Godot Project
+name: Godot CI/CD
 
 on:
   push: {}
   pull_request: {}
 
-jobs:
-  Godot:
+jobs:        
+  build:
     runs-on: ubuntu-latest
+    container:
+      image: barichello/godot-ci:4.2.1
     strategy:
       matrix:
         platform: [windows]
     steps:
       - uses: actions/checkout@v2
-        with:
-          lfs: true
       - name: Build
-        id: build
-        uses: manleydev/build-godot-action@v1.4.1
+        run: |
+          mkdir -v -p build/${{ matrix.platform }}
+          godot --headless --export-release "${{ matrix.platform }}" build/${{ matrix.platform }}/mijn_awesome_game
+      - uses: actions/upload-artifact@v2
         with:
-          name: example
-          preset: ${{ matrix.platform }}
-          debugMode: "true"
-      - name: Upload Artifact
-        uses: actions/upload-artifact@v2
-        with:
-          name: Client - ${{ matrix.platform }}
-          path: ${{ github.workspace }}/${{ steps.build.outputs.build }}
+          name: ${{ matrix.platform }}-build
+          path: build/${{ matrix.platform }}
