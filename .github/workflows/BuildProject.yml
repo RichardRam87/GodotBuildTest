@@ -1,0 +1,37 @@
+name: "Godot Build"
+on:
+  push:
+    branches: [ "main", "develop" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        platform: [windows]
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          lfs: true
+      
+      - name: Setup Godot
+        uses: chickensoft-games/setup-godot@v1
+        with:
+          version: 4.2.2  # Pas dit aan naar de Godot-versie die je gebruikt
+          use-dotnet: false
+      
+      - name: Build
+        env:
+          GODOT_BUILD_PLATFORM: ${{ matrix.platform }}
+        run: |
+          mkdir -v -p build/${{ matrix.platform }}
+          godot --headless --verbose --export-release "${{ matrix.platform }}" build/${{ matrix.platform }}/game.${{ matrix.platform == 'windows' && 'exe' || matrix.platform == 'linux' && 'x86_64' || matrix.platform == 'mac' && 'zip' || 'html' }}
+
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: ${{ matrix.platform }}
+          path: build/${{ matrix.platform }}
