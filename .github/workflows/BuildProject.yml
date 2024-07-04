@@ -1,37 +1,56 @@
-name: "Godot Build"
-on:
-  push:
-    branches: [ "main", "develop" ]
-  pull_request:
-    branches: [ "main" ]
+name: 🚥 Status Checks
+on: push
 
 jobs:
-  build:
-    name: Build
-    runs-on: ubuntu-latest
+  tests:
+    name: 👀 Evaluate on ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
     strategy:
+      # Don't cancel other OS runners if one fails.
+      fail-fast: false
       matrix:
-        platform: [windows]
+        # Put the operating systems you want to run on here.
+        os: [windows-latest]
+    env:
+      DOTNET_CLI_TELEMETRY_OPTOUT: true
+      DOTNET_NOLOGO: true
+    defaults:
+      run:
+        # Use bash shells on all platforms.
+        shell: bash
     steps:
       - uses: actions/checkout@v3
-        with:
-          lfs: true
-      
-      - name: Setup Godot
-        uses: chickensoft-games/setup-godot@v1
-        with:
-          version: 4.2.2  # Pas dit aan naar de Godot-versie die je gebruikt
-          use-dotnet: false
-      
-      - name: Build
-        env:
-          GODOT_BUILD_PLATFORM: ${{ matrix.platform }}
-        run: |
-          mkdir -v -p build/${{ matrix.platform }}
-          godot --headless --verbose --export-release "${{ matrix.platform }}" build/${{ matrix.platform }}/game.${{ matrix.platform == 'windows' && 'exe' || matrix.platform == 'linux' && 'x86_64' || matrix.platform == 'mac' && 'zip' || 'html' }}
+        name: 🧾 Checkout
 
-      - name: Upload Artifact
-        uses: actions/upload-artifact@v3
+      - uses: actions/setup-dotnet@v3
+        name: 💽 Setup .NET SDK
         with:
-          name: ${{ matrix.platform }}
-          path: build/${{ matrix.platform }}
+          # Use the .NET SDK from global.json in the root of the repository.
+          global-json-file: global.json
+
+      - name: 📦 Restore Dependencies
+        run: dotnet restore
+
+      - uses: chickensoft-games/setup-godot@v1
+        name: 🤖 Setup Godot
+        with:
+          # Version must include major, minor, and patch, and be >= 4.0.0
+          # Pre-release label is optional.
+          version: 4.2.2 # also valid: 4.0.0.rc1 or 4.0.0, etc
+          # Use .NET-enabled version of Godot (the default is also true).
+          use-dotnet: false
+          # Include the Godot Export Templtes (the default is false).
+          include-templates: true
+
+      - name: 🔬 Verify Setup
+        run: |
+          dotnet --version
+          godot --version
+
+      - name: 🧑‍🔬 Generate .NET Bindings
+        run: godot --headless --build-solutions --quit || exit 0
+
+      - name: 🦺 Build Projects
+        run: dotnet build
+
+      # Do whatever you want!
