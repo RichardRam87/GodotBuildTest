@@ -1,43 +1,69 @@
-name: "GUT Test"
-on: push
+name: beehave-ci
 
-env:
-  GODOT_VERSION: 4.2.2
-  EXPORT_NAME: GodotBuildTest
-  PROJECT_PATH: GodotBuildText
+on:
+  push:
+    branches:
+      - "main"
+    paths-ignore:
+      - "**.jpg"
+      - "**.png"
+      - "**.svg"
+      - "**.md"
+      - "**plugin.cfg"
+  pull_request:
+    paths-ignore:
+      - "**.jpg"
+      - "**.png"
+      - "**.svg"
+      - "**.md"
+      - "**plugin.cfg"
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
-  export-windows:
-    name: Windows Export
-    runs-on: ubuntu-20.04
-    container:
-      image: barichello/godot-ci:4.2.2
+  unit-tests:
+    runs-on: ubuntu-latest
+    permissions:
+      actions: write
+      checks: write
+      contents: write
+      pull-requests: write
+      statuses: write
+
+    strategy:
+      fail-fast: false
+      max-parallel: 10
+      matrix:
+        godot-version: ["4.2.2"]
+
+    name: "🤖 CI on Godot ${{ matrix.godot-version }}"
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Run GDUnit4 tests
+        uses: MikeSchulze/gdUnit4-action@v1.1.1
         with:
-          lfs: true
-      - name: Setup
-        run: |
-          mkdir -v -p ~/.local/share/godot/export_templates/
-          mv /root/.local/share/godot/export_templates/${GODOT_VERSION}.stable ~/.local/share/godot/export_templates/${GODOT_VERSION}.stable
+          godot-version: ${{ matrix.godot-version }}
+          godot-status: "stable"
+          timeout: 3
+          paths: "res://test"
+          version: "installed"
+          publish-report: false
+          report-name: report_Godot${{ matrix.godot-version }}_unit-tests
 
-      - name: Install
-        run: |
-          mkdir -p addons/gut
-          wget https://github.com/bitwes/Gut/archive/refs/tags/v7.4.3.tar.gz
-          tar -xzf v7.4.3.tar.gz
-          mv Gut-7.4.3/* addons/gut/
-          rm -rf Gut-7.4.3 v7.4.3.tar.gz
-
-      - name: Run Tests
-        run: |
-          godot -s addons/gut/gut_cmdln.gd -d --path $PWD -gconfig=.gutconfig.json
-
-      - name: Upload Test Results
-        uses: actions/upload-artifact@v2
-        if: always()
-        with:
-          name: test-results
-          path: test_results.xml
-      
+  finalize:
+    if: ${{ !cancelled() }}
+    runs-on: ubuntu-latest
+    name: "Final Results"
+    needs: [unit-tests]
+    steps:
+      - run: exit 1
+        if: >-
+          ${{
+                 contains(needs.*.result, 'failure')
+              || contains(needs.*.result, 'cancelled')
+          }}
