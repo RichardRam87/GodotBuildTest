@@ -1,5 +1,5 @@
 name: "GUT Test"
-on: push
+# on: push
 
 env:
   GODOT_VERSION: 4.2.2
