@@ -22,15 +22,18 @@ jobs:
           mkdir -v -p ~/.local/share/godot/export_templates/
           mv /root/.local/share/godot/export_templates/${GODOT_VERSION}.stable ~/.local/share/godot/export_templates/${GODOT_VERSION}.stable
 
-      - name: Run Tests
-        run: |
-          godot --headless --verbose -s addons/gut/gut_cmdln.gd -d --path "$PWD" -gconfig=.gutconfig.json
-          # godot -s addons/gut/gut_cmdln.gd -d --path $PWD -gconfig=.gutconfig.json
-
       - name: Upload Test Results
         uses: actions/upload-artifact@v2
         if: always()
         with:
           name: test-results
           path: test_results.xml
-      
+          
+run-gut-test:
+  name: Run GUT Test
+  runs-on: ubuntu-20.04
+  steps:
+    - uses: manleydev/run-gut-tests-action@4.2.2
+      with:
+        directory: client
+  
