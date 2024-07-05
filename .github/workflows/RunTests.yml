@@ -1,4 +1,4 @@
-name: "GUT Test"
+itorname: "GUT Test"
 on: push
 
 env:
@@ -24,7 +24,7 @@ jobs:
 
       - name: Run Tests
         run: |
-          godot --headless -s addons/gut/gut_cmdln.gd -d --path "$PWD" -gconfig=.gutconfig.json
+          godot --headless --editor --quit -s addons/gut/gut_cmdln.gd -d --path "$PWD" -gconfig=.gutconfig.json
           # godot -s addons/gut/gut_cmdln.gd -d --path $PWD -gconfig=.gutconfig.json
 
       - name: Upload Test Results
