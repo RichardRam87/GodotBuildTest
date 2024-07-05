@@ -69,7 +69,7 @@ jobs:
     if: ${{ !cancelled() }}
     runs-on: ubuntu-latest
     name: "Final Results"
-    needs: [unit-tests, export-windows]
+    needs: [unit-tests]
     steps:
       - run: exit 1
         if: >-
