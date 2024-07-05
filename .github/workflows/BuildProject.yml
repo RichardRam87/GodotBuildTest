@@ -23,7 +23,7 @@ jobs:
        uses: croconut/godot-tester@v5.1
        with:
        # Your Godot version number e.g. 3.2.2
-         version: $GODOT_VERSION
+         version: ${GODOT_VERSION}
          # Your Godot release type e.g. rc2, beta3
          # Directory containing Gut tests
          test-dir: res://test/unit # optional, default is res://test
