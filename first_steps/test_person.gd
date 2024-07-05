@@ -11,3 +11,6 @@ func _init(first_name :String, last_name :String):
 
 func full_name() -> String:
 	return _first_name + " " + _last_name
+
+func sum(a:int, b:int) -> int:
+	return a + b
