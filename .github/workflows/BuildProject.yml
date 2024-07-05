@@ -20,17 +20,16 @@ jobs:
         with:
           lfs: true
 
-      # dit werkt, maar nu even uitgecomment om te kijken of ik met 1 docker uit de voeten kom...
-      # - name: godot-tester
+      - name: godot-tester
       # You may pin to the exact commit or the version.
       # uses: croconut/godot-tester@c0b6cffca6fd87793334bdb9cac050228b43eb74
-      #  uses: croconut/godot-tester@v5.1
-      #  with:
+        uses: croconut/godot-tester@v5.1
+        with:
           # Your Godot version number e.g. 3.2.2
-      #    version: 4.2.2 # default is 3.2.2
+          version: 4.2.2 # default is 3.2.2
           # Your Godot release type e.g. rc2, beta3
           # Directory containing Gut tests
-     #     test-dir: res://test/unit # optional, default is res://test
+          test-dir: res://test/unit # optional, default is res://test
           # Full path to your GUT config file, e.g. 'res://<path>/<config>.json'.
           # config-file: # optional, default is res://.gutconfig.json
           # URL where a precompiled, custom Godot binary will be downloaded and used instead of an official Godot binary.
@@ -42,9 +41,6 @@ jobs:
         run: |
           mkdir -v -p ~/.local/share/godot/export_templates/
           mv /root/.local/share/godot/export_templates/${GODOT_VERSION}.stable ~/.local/share/godot/export_templates/${GODOT_VERSION}.stable
-      - name : run test
-        run: |
-          godot --headless --verbose -s addons/gut/gutcmdln.gd -d --path "$PWD" -gtest=res://test/unit/test_example.gd -glog=1 -gexit
           
       - name: Windows Build
         run: |
