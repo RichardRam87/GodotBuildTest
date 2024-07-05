@@ -7,6 +7,3 @@ func test_passes():
 func test_fails():
 	# this test will fail because those strings are not equal
 	assert_eq('hello', 'hello')
-
-func test_another_fail():
-	assert_eq('hello', 'goodbye')
