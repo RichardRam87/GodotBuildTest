@@ -44,15 +44,14 @@ jobs:
     name: Windows Export
     runs-on: ubuntu-20.04
     needs: [run-tests]
+    container:
+      image: barichello/godot-ci:4.2.1
     
     steps:          
       - name: Checkout
         uses: actions/checkout@v4
         with:
           lfs: true
-      
-      - name: godot-ci
-        uses: abarichello/godot-ci@3.4.2
         
       - name: Setup
         run: |
