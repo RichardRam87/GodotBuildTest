@@ -15,6 +15,11 @@ jobs:
     container:
       image: barichello/godot-ci:4.2.2
     steps:
+      - name: Run GUT Tests
+        uses: ceceppa/godot-gut-ci@0.2.0
+        with:
+          godot_version: 4.2.2
+        
       - name: Checkout
         uses: actions/checkout@v4
         with:
@@ -31,4 +36,5 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: windows
-          path: build/windows
+          path: build/windows          
+  
