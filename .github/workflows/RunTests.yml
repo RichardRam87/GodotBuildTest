@@ -6,15 +6,15 @@ env:
   PROJECT_PATH: GodotBuildText
 
 on:
-  push:
-    branches: ["main"]
-    paths-ignore:
-      - "**.{jpg,png,svg,md}"
-      - "**plugin.cfg"
-  pull_request:
-    paths-ignore:
-      - "**.{jpg,png,svg,md}"
-      - "**plugin.cfg"
+  # push:
+  #  branches: ["main"]
+  #  paths-ignore:
+  #    - "**.{jpg,png,svg,md}"
+#    - "**plugin.cfg"
+  # pull_request:
+    # paths-ignore:
+     # - "**.{jpg,png,svg,md}"
+     # - "**plugin.cfg"
   workflow_dispatch:
 
 concurrency:
