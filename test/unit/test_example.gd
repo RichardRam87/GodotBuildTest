@@ -6,4 +6,4 @@ func test_passes():
 	
 func test_fails():
 	# this test will fail because those strings are not equal
-	assert_eq('hello', 'hello')
+	assert_eq('hello', 'goodbye')
