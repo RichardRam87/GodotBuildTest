@@ -1,4 +1,4 @@
-dname: "GUT Test"
+name: "GUT Test"
 on: push
 
 env:
