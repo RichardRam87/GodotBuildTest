@@ -1,36 +1,13 @@
-name: "GUT Test"
+name: "godot gut test"
 on: push
 
-env:
-  GODOT_VERSION: 4.2.2
-  EXPORT_NAME: GodotBuildTest
-  PROJECT_PATH: GodotBuildText
-
 jobs:
-  run-gut-test:
-    name: Run GUT Test
-    runs-on: ubuntu-20.04
-    steps:
-      - uses: manleydev/run-gut-tests-action@v1.1.0
-          
-  export-windows:
-    name: Windows Export
-    runs-on: ubuntu-20.04
-    container:
-      image: barichello/godot-ci:4.2.2
+  execute-gut:
+    name: Run GUT tests
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-        with:
-          lfs: true
-      - name: Setup
-        run: |
-          mkdir -v -p ~/.local/share/godot/export_templates/
-          mv /root/.local/share/godot/export_templates/${GODOT_VERSION}.stable ~/.local/share/godot/export_templates/${GODOT_VERSION}.stable
 
-      - name: Upload Test Results
-        uses: actions/upload-artifact@v2
-        if: always()
-        with:
-          name: test-results
-          path: test_results.xml 
+      - name: Docker test
+        uses: ceceppa/godot-gut-ci@main
