@@ -17,5 +17,5 @@ func test_full_name() -> void:
 func test_sum() -> void:
 	var person := TestPersion.new("King", "Arthur")
 	var sum = person.sum(1, 1)
-	assert_int(sum).is_equal(3)
+	assert_int(sum).is_equal(2)
 	person.free()
