@@ -45,7 +45,7 @@ jobs:
     runs-on: ubuntu-20.04
     needs: [run-tests]
     container:
-      image: barichello/godot-ci:4.2.1
+      image: barichello/godot-ci:4.2.2
     
     steps:          
       - name: Checkout
