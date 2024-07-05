@@ -1,0 +1,70 @@
+name: install-godot-binary
+description: "Installs the Godot Runtime"
+
+inputs: # <-- There are a couple of inputs we have to pass from `tests.yml`
+	godot-version: # ${{ inputs.godot-version }} <- defaults to '3.5.3'
+		description: "The Godot engine version"
+		type: string
+		required: true # <-- No default values here so we better pass these values 👀
+	godot-status-version: # 'stable'
+		description: "The Godot engine status version"
+		type: string
+		required: true
+	godot-bin-name: # 'linux_headless.64'
+		type: string
+		required: true
+	godot-cache-path: # '~/godot-linux'
+		type: string
+		required: true
+
+runs: # <-- We are in a job already here
+	using: composite
+	steps:
+		- name: "Set Cache Name" # <-- Creating this nice string `Linux-Godot_v3.5.3-stable`
+			shell: bash # It is stored in the `CACHE_NAME` env var
+			run: |
+				echo "CACHE_NAME=${{ runner.OS }}-Godot_v${{ inputs.godot-version }}-${{ inputs.godot-status-version }}" >> "$GITHUB_ENV"
+
+		- name: "Godot Cache Restore"
+			uses: actions/cache/restore@v3 # <-- We try to restore cached files here
+			id: godot-restore-cache
+			with:
+				path: ${{ inputs.godot-cache-path }} # <-- This is also the download path
+				key: ${{ env.CACHE_NAME }} # <-- Here the cache name from above is used
+
+		- name: "Download and Install Godot ${{ inputs.godot-version }}"
+			if: steps.godot-restore-cache.outputs.cache-hit != 'true' # <-- no cache? Download
+			continue-on-error: false # <-- If the download fails, the job fails
+			shell: bash
+			run: |
+				mkdir -p ${{ inputs.godot-cache-path }} # <-- create the download/cache path
+				chmod 770 ${{ inputs.godot-cache-path }} # <-- Set the right rights
+				DIR="$HOME/.config/godot"
+				if [ ! -d "$DIR" ]; then
+					mkdir -p "$DIR"
+					chmod 770 "$DIR"
+				fi
+
+				DOWNLOAD_URL=https://github.com/godotengine/godot/releases/download/${{ inputs.godot-version }}-${{ inputs.godot-status-version }}
+				GODOT_BIN=Godot_v${{ inputs.godot-version }}-${{ inputs.godot-status-version }}_${{ inputs.godot-bin-name }}
+
+				GODOT_PACKAGE=$GODOT_BIN.zip
+				# 👇 Download the headless Linux Godot package from GitHub
+				wget $DOWNLOAD_URL/$GODOT_PACKAGE -P ${{ inputs.godot-cache-path }}
+				# 👇 Unzip the file
+				unzip ${{ inputs.godot-cache-path }}/$GODOT_PACKAGE -d ${{ inputs.godot-cache-path }}
+
+				# 👇 Rename the executable to `godot`
+				mv ${{ inputs.godot-cache-path }}/$GODOT_BIN ${{ inputs.godot-cache-path }}/godot
+
+				# 👇 Set the execution right for the executable
+				chmod u+x ${{ inputs.godot-cache-path }}/godot
+				# 👇 Print the path to the executable
+				echo "${{ inputs.godot-cache-path }}/godot"
+
+		- name: "Godot Cache Save"
+			if: steps.godot-restore-cache.outputs.cache-hit != 'true' # <-- no cache?
+			uses: actions/cache/save@v3 # <-- Then cache the downloaded files
+			with:
+				path: ${{ inputs.godot-cache-path }}
+				key: ${{ steps.godot-restore-cache.outputs.cache-primary-key }}
