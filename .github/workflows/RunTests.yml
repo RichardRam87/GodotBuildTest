@@ -22,17 +22,10 @@ jobs:
           mkdir -v -p ~/.local/share/godot/export_templates/
           mv /root/.local/share/godot/export_templates/${GODOT_VERSION}.stable ~/.local/share/godot/export_templates/${GODOT_VERSION}.stable
 
-      - name: Install
-        run: |
-          mkdir -p addons/gut
-          wget https://github.com/bitwes/Gut/archive/refs/tags/v7.4.3.tar.gz
-          tar -xzf v7.4.3.tar.gz
-          mv Gut-7.4.3/* addons/gut/
-          rm -rf Gut-7.4.3 v7.4.3.tar.gz
-
       - name: Run Tests
         run: |
-          godot -s addons/gut/gut_cmdln.gd -d --path $PWD -gconfig=.gutconfig.json
+          godot -s addons/gut/gut_cmdln.gd -d --path "$PWD" -gtest=res://test/unit/test_example.gd -glog=1 -gexit
+          # godot -s addons/gut/gut_cmdln.gd -d --path $PWD -gconfig=.gutconfig.json
 
       - name: Upload Test Results
         uses: actions/upload-artifact@v2
