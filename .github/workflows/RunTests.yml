@@ -11,7 +11,7 @@ jobs:
     name: Run GUT Test
     runs-on: ubuntu-20.04
     steps:
-      - uses: manleydev/run-gut-tests-action@4.2.2
+      - uses: manleydev/run-gut-tests-action@latest
         with:
           directory: client
           
