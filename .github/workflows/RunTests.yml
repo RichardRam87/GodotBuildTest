@@ -62,7 +62,7 @@ jobs:
           
   export-windows:
     name: Windows Export
-    needs: [unit-tests]
+    # needs: [unit-tests]
     runs-on: ubuntu-20.04
     container:
       image: barichello/godot-ci:4.2.2
