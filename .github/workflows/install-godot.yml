@@ -2,20 +2,10 @@ name: install-godot-binary
 description: "Installs the Godot Runtime"
 
 inputs: # <-- There are a couple of inputs we have to pass from `tests.yml`
-	godot-version: # ${{ inputs.godot-version }} <- defaults to '3.5.3'
-		description: "The Godot engine version"
+        godot-version: # ${{ inputs.godot-version }} <- defaults to '3.5.3'
+                description: "The Godot engine version"
 		type: string
 		required: true # <-- No default values here so we better pass these values 👀
-	godot-status-version: # 'stable'
-		description: "The Godot engine status version"
-		type: string
-		required: true
-	godot-bin-name: # 'linux_headless.64'
-		type: string
-		required: true
-	godot-cache-path: # '~/godot-linux'
-		type: string
-		required: true
 
 runs: # <-- We are in a job already here
 	using: composite
