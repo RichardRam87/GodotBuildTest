@@ -7,6 +7,14 @@ env:
   PROJECT_PATH: GodotBuildText
 
 jobs:
+  run-gut-test:
+    name: Run GUT Test
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: manleydev/run-gut-tests-action@4.2.2
+        with:
+          directory: client
+          
   export-windows:
     name: Windows Export
     runs-on: ubuntu-20.04
@@ -27,13 +35,4 @@ jobs:
         if: always()
         with:
           name: test-results
-          path: test_results.xml
-          
-run-gut-test:
-  name: Run GUT Test
-  runs-on: ubuntu-20.04
-  steps:
-    - uses: manleydev/run-gut-tests-action@4.2.2
-      with:
-        directory: client
-  
+          path: test_results.xml 
