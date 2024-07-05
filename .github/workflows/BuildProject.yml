@@ -14,18 +14,17 @@ jobs:
     runs-on: ubuntu-20.04
     container:
       image: barichello/godot-ci:4.2.2
-    steps:
-      - name: Run GUT Tests
-        uses: ceceppa/godot-gut-ci@0.2.0
-        with:
-          godot_version: 4.2.2
-          gut_params: -gdir=res://test/unit
-            
-        
+    steps:          
       - name: Checkout
         uses: actions/checkout@v4
         with:
           lfs: true
+          
+      - name: Run GUT Tests
+        uses: croconut/godot-tester@v5.1
+        with:
+          godot_version: 4.2.2
+          
       - name: Setup
         run: |
           mkdir -v -p ~/.local/share/godot/export_templates/
