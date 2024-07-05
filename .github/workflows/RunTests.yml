@@ -59,16 +59,6 @@ jobs:
           version: "installed"
           publish-report: false
           report-name: report_Godot${{ matrix.godot-version }}_unit-tests
-
-      - name: Windows Build
-        run: |
-          mkdir -v -p build/windows
-          godot --headless --verbose --export-release "Windows Desktop" build/windows/$EXPORT_NAME.exe
-      - name: Upload Artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: windows
-          path: build/windows
           
   export-windows:
     name: Windows Export
