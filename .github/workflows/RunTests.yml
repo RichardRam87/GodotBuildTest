@@ -12,8 +12,6 @@ jobs:
     runs-on: ubuntu-20.04
     steps:
       - uses: manleydev/run-gut-tests-action@v1.1.0
-        with:
-          directory: client
           
   export-windows:
     name: Windows Export
