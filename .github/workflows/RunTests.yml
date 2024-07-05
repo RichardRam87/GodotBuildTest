@@ -22,24 +22,8 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  checkout:
-    name: "📥 Checkout Repository"
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-        with:
-          lfs: true
-          fetch-depth: 0
-      - name: Upload repository
-        uses: actions/upload-artifact@v4
-        with:
-          name: repo
-          path: .
-
   unit-tests:
     name: "🧪 CI on Godot ${{ matrix.godot-version }}"
-    needs: checkout
     runs-on: ubuntu-latest
     permissions:
       actions: write
@@ -53,11 +37,17 @@ jobs:
       matrix:
         godot-version: ["4.2.2"]
     steps:
-      - name: Download repository
-        uses: actions/download-artifact@v4
+      - name: Checkout repository
+        uses: actions/checkout@v4
         with:
-          name: repo
-      
+          lfs: true
+
+      - name: Cache Godot
+        uses: actions/cache@v3
+        with:
+          path: ~/.local/share/godot
+          key: ${{ runner.os }}-godot-${{ env.GODOT_VERSION }}
+
       - name: Run GDUnit4 tests
         uses: MikeSchulze/gdUnit4-action@v1.1.1
         with:
@@ -71,26 +61,32 @@ jobs:
 
   export-windows:
     name: "🖥️ Windows Export"
-    needs: [checkout, unit-tests]
+    needs: [unit-tests]
     runs-on: ubuntu-20.04
     container:
       image: barichello/godot-ci:4.2.2
     steps:
-      - name: Download repository
-        uses: actions/download-artifact@v4
+      - name: Checkout repository
+        uses: actions/checkout@v4
         with:
-          name: repo
-      
+          lfs: true
+
+      - name: Cache Godot
+        uses: actions/cache@v3
+        with:
+          path: ~/.local/share/godot
+          key: ${{ runner.os }}-godot-${{ env.GODOT_VERSION }}
+
       - name: Setup
         run: |
           mkdir -v -p ~/.local/share/godot/export_templates/
           mv /root/.local/share/godot/export_templates/${GODOT_VERSION}.stable ~/.local/share/godot/export_templates/${GODOT_VERSION}.stable
-      
+
       - name: Windows Build
         run: |
           mkdir -v -p build/windows
           godot --headless --verbose --export-release "Windows Desktop" build/windows/$EXPORT_NAME.exe
-      
+
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
