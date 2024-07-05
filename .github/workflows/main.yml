@@ -1,0 +1,12 @@
+name: TestMain
+
+on:
+  workflow_dispatch:
+
+jobs:
+  install-godot:
+    name: "Installing Godot"
+    uses: ./.github/workflows/install-godot.yml
+    with:
+      godot-version: 4.2.2
+    
