@@ -7,20 +7,13 @@ env:
 
 on:
   push:
-    branches:
-      - "main"
+    branches: ["main"]
     paths-ignore:
-      - "**.jpg"
-      - "**.png"
-      - "**.svg"
-      - "**.md"
+      - "**.{jpg,png,svg,md}"
       - "**plugin.cfg"
   pull_request:
     paths-ignore:
-      - "**.jpg"
-      - "**.png"
-      - "**.svg"
-      - "**.md"
+      - "**.{jpg,png,svg,md}"
       - "**plugin.cfg"
   workflow_dispatch:
 
@@ -29,7 +22,24 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  checkout:
+    name: "📥 Checkout Repository"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          lfs: true
+          fetch-depth: 0
+      - name: Upload repository
+        uses: actions/upload-artifact@v4
+        with:
+          name: repo
+          path: .
+
   unit-tests:
+    name: "🧪 CI on Godot ${{ matrix.godot-version }}"
+    needs: checkout
     runs-on: ubuntu-latest
     permissions:
       actions: write
@@ -37,18 +47,17 @@ jobs:
       contents: write
       pull-requests: write
       statuses: write
-
     strategy:
       fail-fast: false
       max-parallel: 10
       matrix:
         godot-version: ["4.2.2"]
-
-    name: "🤖 CI on Godot ${{ matrix.godot-version }}"
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
+      - name: Download repository
+        uses: actions/download-artifact@v4
+        with:
+          name: repo
+      
       - name: Run GDUnit4 tests
         uses: MikeSchulze/gdUnit4-action@v1.1.1
         with:
@@ -59,41 +68,46 @@ jobs:
           version: "installed"
           publish-report: false
           report-name: report_Godot${{ matrix.godot-version }}_unit-tests
-          
+
   export-windows:
-    name: Windows Export
-    # needs: [unit-tests]
+    name: "🖥️ Windows Export"
+    needs: [checkout, unit-tests]
     runs-on: ubuntu-20.04
     container:
       image: barichello/godot-ci:4.2.2
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+      - name: Download repository
+        uses: actions/download-artifact@v4
         with:
-          lfs: true
+          name: repo
+      
       - name: Setup
         run: |
           mkdir -v -p ~/.local/share/godot/export_templates/
           mv /root/.local/share/godot/export_templates/${GODOT_VERSION}.stable ~/.local/share/godot/export_templates/${GODOT_VERSION}.stable
+      
       - name: Windows Build
         run: |
           mkdir -v -p build/windows
           godot --headless --verbose --export-release "Windows Desktop" build/windows/$EXPORT_NAME.exe
+      
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: windows
+          name: windows-build
           path: build/windows
-          
+
   finalize:
-    if: ${{ !cancelled() }}
+    if: always()
     runs-on: ubuntu-latest
-    name: "Final Results"
+    name: "📊 Final Results"
     needs: [unit-tests, export-windows]
     steps:
-      - run: exit 1
-        if: >-
-          ${{
-                 contains(needs.*.result, 'failure')
-              || contains(needs.*.result, 'cancelled')
-          }}
+      - name: Check job status
+        run: |
+          if [[ "${{ contains(needs.*.result, 'failure') || contains(needs.*.result, 'cancelled') }}" == "true" ]]; then
+            echo "One or more jobs failed or were cancelled"
+            exit 1
+          else
+            echo "All jobs completed successfully"
+          fi
