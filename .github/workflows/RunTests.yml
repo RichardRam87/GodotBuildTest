@@ -24,7 +24,7 @@ jobs:
 
       - name: Run Tests
         run: |
-          godot --headless --editor --quit -s addons/gut/gut_cmdln.gd -d --path "$PWD" -gconfig=.gutconfig.json
+          godot --headless --verbose -s addons/gut/gut_cmdln.gd -d --path "$PWD" -gconfig=.gutconfig.json
           # godot -s addons/gut/gut_cmdln.gd -d --path $PWD -gconfig=.gutconfig.json
 
       - name: Upload Test Results
