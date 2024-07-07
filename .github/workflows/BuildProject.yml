@@ -26,7 +26,7 @@ jobs:
          version: 4.2.2
          # Your Godot release type e.g. rc2, beta3
          # Directory containing Gut tests
-         test-dir: res://addons/ # optional, default is res://test
+         test-dir: res:// # optional, default is res://test
          # Full path to your GUT config file, e.g. 'res://<path>/<config>.json'.
          config-file: res://.gutconfig.json # optional, default is res://.gutconfig.json
          # URL where a precompiled, custom Godot binary will be downloaded and used instead of an official Godot binary.
