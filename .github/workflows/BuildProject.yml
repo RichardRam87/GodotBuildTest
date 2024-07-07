@@ -1,6 +1,9 @@
 name: "godot-ci export"
 on: 
   push:
+  schedule:
+    # nightly test at 22:00 Amsterdam time
+    - cron: '0 20 * * *'
   workflow_dispatch:
 
 env:
