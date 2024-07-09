@@ -10,7 +10,6 @@ on:
 
 jobs:
   run-tests:
-    name: Run GUT Tests
     runs-on: ubuntu-20.04
     steps:
      - name: Checkout
