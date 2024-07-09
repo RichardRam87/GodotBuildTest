@@ -20,14 +20,14 @@ on:
         type: string
 
 env:
-  IMAGE: barichello/godot/ci:${{inputs.godot_version}}
+  IMAGE: barichello/godot/ci:${{ inputs.godot_version }}
   
 jobs:
   build-for-platform:
     name: Platform Export
     runs-on: ubuntu-20.04
     container:
-      image: $IMAGE
+      image: ${{ env.IMAGE }}
     
     steps:          
       - name: Checkout
