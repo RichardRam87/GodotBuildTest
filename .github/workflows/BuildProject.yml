@@ -28,4 +28,4 @@ jobs:
     with:
       platform: ${{ matrix.platform }}
       export_folder: ${{ matrix.export_folder }}
-      build_extention: ${{ build_extention }}
+      build_extention: ${{ matrix.build_extention }}
