@@ -8,8 +8,9 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix: 
-        message: ['Hallo', 'World']
-        another: ['Richard', Ram']
+        include:
+          - { message: 'Hello', another: 'World' }
+          - { message: 'Richard', another: 'Ram' }
         
     steps:
     - name: Print Message
