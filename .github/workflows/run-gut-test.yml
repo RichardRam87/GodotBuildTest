@@ -1,0 +1,41 @@
+# Runs GUT Unit Tests and uploads test results
+name: GUT Unit Test
+
+on:
+  workflow_call:
+    inputs:
+      godot_version:
+        required: true
+        type: string
+
+jobs:
+  run-tests:
+    runs-on: ubuntu-20.04
+    steps:
+     - name: Checkout
+       uses: actions/checkout@v4
+       with:
+         lfs: true
+        
+     - name: GUT-Tests
+       # You may pin to the exact commit or the version.
+       # uses: croconut/godot-tester@c0b6cffca6fd87793334bdb9cac050228b43eb74
+       uses: croconut/godot-tester@v5.1
+       with:
+       # Your Godot version number e.g. 3.2.2
+         version: ${{ inputs.godot_version }}
+         # Your Godot release type e.g. rc2, beta3
+         # Directory containing Gut tests
+         test-dir: res:// # optional, default is res://test
+         # Full path to your GUT config file, e.g. 'res://<path>/<config>.json'.
+         config-file: res://.gutconfig.json # optional, default is res://.gutconfig.json
+         # URL where a precompiled, custom Godot binary will be downloaded and used instead of an official Godot binary.
+         # custom-godot-dl-url: # optional, default is 
+         # Filename to store and read results in XML
+         # result-output-file: # optional, default is test_results.xml
+         
+     - name: Upload Artifact
+       uses: actions/upload-artifact@v4
+       with:
+        name: TestLog
+        path: test_results.xml

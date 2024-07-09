@@ -1,0 +1,20 @@
+name: matrix-test
+
+on:
+  workflow_dispatch:
+
+jobs:
+  print-job:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix: 
+        include:
+          - { message: 'Hello', another: 'World' }
+          - { message: 'Richard', another: 'Ram' }
+        
+    steps:
+    - name: Print Message
+      run: |
+        echo "Message: ${{ matrix.message }}"
+        echo "Message: ${{ matrix.another }}"
+      shell: bash
