@@ -29,5 +29,5 @@ jobs:
       platform: ${{ matrix.platform }}
       export_folder: ${{ matrix.export_folder }}
       build_extention: ${{ matrix.build_extention }}
-      godot_version: $GODOT_VERSION
+      godot_version: 4.2.2
       export_name: $EXPORT_NAME
