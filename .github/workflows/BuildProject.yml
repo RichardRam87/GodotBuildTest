@@ -25,8 +25,8 @@ jobs:
     strategy:
       matrix: 
         include:
-          - { platform_name: "Windows Desktop", build_folder: windows }
-          - { platform_name: "Mac OSX", build_folder: mac }
+          - { platform_name: Windows Desktop, build_folder: windows }
+          - { platform_name: Mac OSX, build_folder: mac }
     
     steps:          
       - name: Checkout
@@ -42,7 +42,7 @@ jobs:
       - name: Platform Build
         run: |
           mkdir -v -p build/${{matrix.build_folder}}/
-          godot --headless --verbose --export-release ${{matrix.platform_name}} build/${{matrix.build_folder}}/$EXPORT_NAME.exe
+          godot --headless --verbose --export-release "${{matrix.platform_name}}" build/${{matrix.build_folder}}/$EXPORT_NAME.exe
           
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
