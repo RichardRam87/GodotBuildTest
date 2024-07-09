@@ -16,4 +16,4 @@ jobs:
       run: |
         echo "Message: ${{ matrix.message }}"
         echo "Message: ${{ matrix.another }}"
-      shell: b
+      shell: bash
