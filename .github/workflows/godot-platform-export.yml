@@ -24,7 +24,7 @@ jobs:
     name: Platform Export
     runs-on: ubuntu-20.04
     container:
-      image: barichello/godot-ci:${{inputs.godot_version}}
+      image: barichello/godot-ci:4.2.2
     
     steps:          
       - name: Checkout
