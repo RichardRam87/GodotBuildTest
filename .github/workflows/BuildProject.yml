@@ -41,11 +41,11 @@ jobs:
           
       - name: Windows Build
         run: |
-          mkdir -v -p build/${{build_folder}}/
-          godot --headless --verbose --export-release ${{matrix.platform_name}} build/${{build_folder}}/$EXPORT_NAME.exe
+          mkdir -v -p build/${{matrix.build_folder}}/
+          godot --headless --verbose --export-release ${{matrix.platform_name}} build/${{matrix.build_folder}}/$EXPORT_NAME.exe
           
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: ${{build_folder}}
-          path: build/${{build_folder}}
+          name: ${{matrix.build_folder}}
+          path: build/${{matrix.build_folder}}
