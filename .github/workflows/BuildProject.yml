@@ -16,8 +16,8 @@ jobs:
     # with:
       # godot_version: 4.2.2
     
-  export-build:
-    name: Windows Export
+  export-builds:
+    name: Platform Export
     runs-on: ubuntu-20.04
     # needs: [run-tests]
     container:
@@ -25,8 +25,8 @@ jobs:
     strategy:
       matrix: 
         include:
-          - { platform_name: "Windows Desktop", build_folder: "windows" }
-          - { platform_name: "Mac OSX", build_folder: "mac" }
+          - { platform_name: "Windows Desktop", build_folder: windows }
+          - { platform_name: "Mac OSX", build_folder: mac }
     
     steps:          
       - name: Checkout
@@ -39,7 +39,7 @@ jobs:
           mkdir -v -p ~/.local/share/godot/export_templates/
           mv /root/.local/share/godot/export_templates/${GODOT_VERSION}.stable ~/.local/share/godot/export_templates/${GODOT_VERSION}.stable
           
-      - name: Windows Build
+      - name: Platform Build
         run: |
           mkdir -v -p build/${{matrix.build_folder}}/
           godot --headless --verbose --export-release ${{matrix.platform_name}} build/${{matrix.build_folder}}/$EXPORT_NAME.exe
