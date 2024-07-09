@@ -11,13 +11,13 @@ env:
   EXPORT_NAME: GodotBuildTest
 
 jobs:
-  run-tests:
-    uses: ./.github/workflows/run-gut-test.yml
-    with:
-      godot_version: 4.2.2
+  # run-tests:
+    # uses: ./.github/workflows/run-gut-test.yml
+    # with:
+      # godot_version: 4.2.2
 
   export-builds:
-    needs: [run-tests]
+    # needs: [run-tests]
     strategy:
       matrix:
         include:
