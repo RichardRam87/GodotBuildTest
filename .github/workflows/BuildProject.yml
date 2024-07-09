@@ -8,13 +8,10 @@ on:
 
 env:
   EXPORT_NAME: GodotBuildTest
-  GODOT_VERSION: 4.2.2
 
 jobs:
   run-tests:
     uses: ./.github/workflows/run-gut-test.yml
-    with:
-      godot_version: $GODOT_VERSION
 
   export-builds:
     needs: [run-tests]
