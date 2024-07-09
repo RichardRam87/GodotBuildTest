@@ -11,7 +11,7 @@ jobs:
     uses: ./.github/workflows/run-gut-test.yml
 
   export-builds:
-    # needs: [run-tests]
+    needs: [run-tests]
     strategy:
       matrix:
         include:
