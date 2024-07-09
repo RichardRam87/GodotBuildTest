@@ -19,12 +19,15 @@ on:
         required: true
         type: string
 
+env:
+  IMAGE: barichello/godot/ci:${{inputs.godot_version}}
+  
 jobs:
   build-for-platform:
     name: Platform Export
     runs-on: ubuntu-20.04
     container:
-      image: barichello/godot-ci:4.2.2
+      image: $IMAGE
     
     steps:          
       - name: Checkout
