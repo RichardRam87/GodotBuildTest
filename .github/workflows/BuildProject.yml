@@ -21,11 +21,12 @@ jobs:
     strategy:
       matrix:
         include:
-          - { platform: Windows Desktop, export_folder: windows, build_extention: exe, godot_version: 4.2.2 }
-          - { platform: Mac OSX, export_folder: mac, build_extention: zip, godot_version: 4.2.2 }
+          - { platform: Windows Desktop, export_folder: windows, build_extention: exe }
+          - { platform: Mac OSX, export_folder: mac, build_extention: zip }
           
     uses: ./.github/workflows/godot-platform-export.yml
     with:
       platform: ${{ matrix.platform }}
       export_folder: ${{ matrix.export_folder }}
       build_extention: ${{ matrix.build_extention }}
+      godot_version: 4.2.2
