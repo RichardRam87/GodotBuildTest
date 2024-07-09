@@ -33,7 +33,7 @@ jobs:
           
       - name: Platform Build
         run: |
-          mkdir -v -p build/${{matrix.build_folder}}/
+          mkdir -v -p build/${{inputs.export_folder}}/
           godot --headless --verbose --export-release "${{inputs.platform}}" build/${{inputs.export_folder}}/$EXPORT_NAME.${{inputs.build_extention}}
           
       - name: Upload Artifact
