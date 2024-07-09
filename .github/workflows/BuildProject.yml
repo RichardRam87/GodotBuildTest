@@ -1,4 +1,4 @@
-nname: "godot-ci export"
+name: "godot-ci export"
 on: 
   push:
   schedule:
