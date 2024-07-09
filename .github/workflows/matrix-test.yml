@@ -9,8 +9,11 @@ jobs:
     strategy:
       matrix: 
         message: ['Hallo', 'World']
+        another: ['Richard', Ram']
         
     steps:
     - name: Print Message
       run: |
         echo "Message: ${{ matrix.message }}"
+        echo "Message: ${{ matrix.another }}"
+      shell: b
