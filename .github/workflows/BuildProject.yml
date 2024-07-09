@@ -25,8 +25,8 @@ jobs:
     strategy:
       matrix: 
         include:
-          - { platform_name: "Windows Desktop", build_folder: windows }
-          - { platform_name: "Mac OSX", build_folder: mac }
+          - { platform_name: "Windows Desktop", build_folder: "windows" }
+          - { platform_name: "Mac OSX", build_folder: "mac" }
     
     steps:          
       - name: Checkout
