@@ -19,7 +19,7 @@ jobs:
   export-builds:
     name: Platform Export
     runs-on: ubuntu-20.04
-    # needs: [run-tests]
+    needs: [run-tests]
     container:
       image: barichello/godot-ci:4.2.2
     strategy:
