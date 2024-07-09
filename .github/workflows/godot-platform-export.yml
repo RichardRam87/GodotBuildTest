@@ -15,6 +15,9 @@ on:
       godot_version:
         required: true
         type: string
+      export_name:
+        required: true
+        type: string
 
 jobs:
   build-for-platform:
@@ -37,7 +40,7 @@ jobs:
       - name: Platform Build
         run: |
           mkdir -v -p build/${{inputs.export_folder}}/
-          godot --headless --verbose --export-release "${{inputs.platform}}" build/${{inputs.export_folder}}/$EXPORT_NAME.${{inputs.build_extention}}
+          godot --headless --verbose --export-release "${{inputs.platform}}" build/${{inputs.export_folder}}/${{inputs.export_name}}.${{inputs.build_extention}}
           
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
