@@ -1,6 +1,6 @@
 name: "godot-ci export"
 on: 
-  # push:
+  push:
   schedule:
     # nightly test at 22:00 Amsterdam time
     - cron: '0 20 * * *'
@@ -41,7 +41,7 @@ jobs:
           
       - name: Windows Build
         run: |
-          mkdir -v -p build/${{build_folder}}
+          mkdir -v -p build/${{build_folder}}/
           godot --headless --verbose --export-release ${{matrix.platform_name}} build/${{build_folder}}/$EXPORT_NAME.exe
           
       - name: Upload Artifact
