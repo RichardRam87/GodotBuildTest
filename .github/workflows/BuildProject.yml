@@ -6,9 +6,6 @@ on:
     - cron: '0 20 * * *'
   workflow_dispatch:
 
-env:
-  EXPORT_NAME: GodotBuildTest
-
 jobs:
   run-tests:
     uses: ./.github/workflows/run-gut-test.yml
@@ -26,4 +23,3 @@ jobs:
       platform: ${{ matrix.platform }}
       export_folder: ${{ matrix.export_folder }}
       build_extention: ${{ matrix.build_extention }}
-      export_name: $EXPORT_NAME
