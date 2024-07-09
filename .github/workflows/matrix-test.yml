@@ -1,0 +1,16 @@
+name: matrix-test
+
+on:
+  workflow_call:
+
+jobs:
+  print-job:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix: 
+        message: ['Hallo', 'World']
+        
+    steps:
+    - name: Print Message
+    run: |
+      echo "Message: ${{ matrix.message }}"
