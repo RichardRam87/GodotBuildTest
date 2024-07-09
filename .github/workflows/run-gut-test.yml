@@ -2,7 +2,11 @@
 name: GUT Unit Test
 
 on:
-  workflow_call:
+  workflow_call: 
+    inputs:
+      godot_version:
+        required: true
+        type: string
 
 jobs:
   run-tests:
@@ -19,7 +23,7 @@ jobs:
        uses: croconut/godot-tester@v5.1
        with:
        # Your Godot version number e.g. 3.2.2
-         version: ${{ vars.GODOT_VERSION }}
+         version: ${{ inputs.godot_version }}
          # Your Godot release type e.g. rc2, beta3
          # Directory containing Gut tests
          test-dir: res:// # optional, default is res://test
