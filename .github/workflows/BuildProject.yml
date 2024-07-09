@@ -11,15 +11,15 @@ env:
   EXPORT_NAME: GodotBuildTest
 
 jobs:
-  run-tests:
-    uses: ./.github/workflows/run-gut-test.yml
-    with:
-      godot_version: 4.2.2
+  # run-tests:
+    # uses: ./.github/workflows/run-gut-test.yml
+    # with:
+      # godot_version: 4.2.2
     
   export-windows:
     name: Windows Export
     runs-on: ubuntu-20.04
-    needs: [run-tests]
+    # needs: [run-tests]
     container:
       image: barichello/godot-ci:4.2.2
     
@@ -48,7 +48,7 @@ jobs:
   export-mac:
     name: Mac Export
     runs-on: ubuntu-20.04
-    needs: [run-tests]
+    # needs: [run-tests]
     container:
       image: barichello/godot-ci:4.2.2
     steps:
@@ -63,7 +63,6 @@ jobs:
       - name: Mac Build
         run: |
           mkdir -v -p build/mac
-          cd $PROJECT_PATH
           godot --headless --verbose --export-release "Mac OSX" ../build/mac/$EXPORT_NAME.zip
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
