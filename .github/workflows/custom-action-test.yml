@@ -1,3 +1,5 @@
+name: custom-action-test
+
 on: 
   workflow_dispatch
 
@@ -8,7 +10,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - id: foo
-        uses: actions/RichardRam87/hello-world-composite-action@v1
+        uses: RichardRam87/hello-world-composite-action@v1
         with:
           who-to-greet: 'Mona the Octocat'
       - run: echo random-number "$RANDOM_NUMBER"
