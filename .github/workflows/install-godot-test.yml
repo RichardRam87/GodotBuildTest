@@ -1,0 +1,33 @@
+name: Install Godot on Linux
+
+on:
+  workflow_dispatch:
+
+jobs:
+  install-godot:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+      
+    - name: Update package lists
+      run: sudo apt-get update
+      
+    - name: Install dependencies
+      run: sudo apt-get install -y wget unzip
+      
+    - name: Download Godot
+      run: wget https://downloads.tuxfamily.org/godotengine/4.2.2/Godot_v4.2.2-stable_linux_headless.64.zip
+      
+    - name: Unzip Godot
+      run: unzip Godot_v3.5.2-stable_linux_headless.64.zip
+      
+    - name: Make Godot executable
+      run: chmod +x Godot_v4.2.2-stable_linux_headless.64
+      
+    - name: Move Godot to /usr/local/bin
+      run: sudo mv Godot_v4.2.2-stable_linux_headless.64 /usr/local/bin/godot
+      
+    - name: Verify Godot installation
+      run: godot --version
