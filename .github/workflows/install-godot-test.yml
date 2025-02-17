@@ -18,16 +18,16 @@ jobs:
       run: sudo apt-get install -y wget unzip
       
     - name: Download Godot
-      run: wget --progress=bar:force:noscroll https://downloads.tuxfamily.org/godotengine/4.2.2/Godot_v4.2.2-stable_linux.x86_64.zip
+      run: wget --progress=bar:force:noscroll https://github.com/godotengine/godot/releases/download/4.3-stable/Godot_v4.3-stable_linux.x86_64.zip
       
     - name: Unzip Godot
-      run: unzip Godot_v4.2.2-stable_linux.x86_64.zip
+      run: unzip Godot_v4.3-stable_linux.x86_64.zip
       
     - name: Make Godot executable
-      run: chmod +x Godot_v4.2.2-stable_linux.x86_64
+      run: chmod +x Godot_v4.3-stable_linux.x86_64
       
     - name: Move Godot to /usr/local/bin
-      run: sudo mv Godot_v4.2.2-stable_linux.x86_64 /usr/local/bin/godot
+      run: sudo mv Godot_v4.3-stable_linux.x86_64 /usr/local/bin/godot
       
     - name: Verify Godot installation
       run: godot --version
