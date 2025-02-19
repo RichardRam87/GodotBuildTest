@@ -31,3 +31,24 @@ jobs:
       
     - name: Verify Godot installation
       run: godot --version
+
+    - name: install export templates
+      run: |
+        mkdir -p ~/.local/share/godot/export_templates/4.3-stable
+        wget https://github.com/godotengine/godot/releases/download/4.3-stable/Godot_v4.3-stable_export_templates.tpz
+        mv templates/* ~/.local/share/godot/export_templates/4.3-stable/
+        rm -rf templates
+        rm Godot_v4.3-stable_export_templates.tpz
+        echo "Export templates installed successfully"
+      shell: bash
+
+    - name: Verify installation
+      run: |
+        if [ -d ~/.local/share/godot/export_templates ]; then
+          echo "Export templates directory exists"
+          ls -la ~/.local/share/godot/export_templates
+        else
+          echo "Export templates directory not found"
+          exit 1
+        fi
+      
