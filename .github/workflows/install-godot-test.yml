@@ -34,9 +34,10 @@ jobs:
 
     - name: install export templates
       run: |
-        mkdir -p ~/.local/share/godot/export_templates/4.3-stable
+        mkdir -p ~/.local/share/godot/export_templates/4.3.stable
         wget --progress=bar:force:noscroll https://github.com/godotengine/godot/releases/download/4.3-stable/Godot_v4.3-stable_export_templates.tpz
-        mv templates/* ~/.local/share/godot/export_templates/4.3-stable/
+        unzip Godot_v4.3-stable_export_templates.tpz -d ~/.local/share/godot/export_templates/4.3.stable/
+        # mv Godot_v4.3-stable_export_templates.tpz ~/.local/share/godot/export_templates/4.3.stable/
         rm -rf templates
         rm Godot_v4.3-stable_export_templates.tpz
         echo "Export templates installed successfully"
